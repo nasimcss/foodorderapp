@@ -1,8 +1,9 @@
 // import { Text, View } from "react-native";
 import React from "react";
 import { Card } from "react-native-paper";
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import styled from "styled-components/native";
+// import { SvgXml } from "react-native-svg";
 
 // const Button = styled.button`
 //   background: transparent;
@@ -12,16 +13,25 @@ import styled from "styled-components/native";
 //   margin: 0 1em;
 //   padding: 0.25em 1em;
 // `;
-const Title = styled.Text`
+const Title = styled(Text)`
+  font-family: ${(props) => props.theme.fonts.heading};
+  font-size: ${(props) => props.theme.fontSizes.body};
   color: ${(props) => props.theme.colors.ui.primary};
-  padding: 16px;
+`;
+const Address = styled(Text)`
+  font-family: ${(props) => props.theme.fonts.body};
+  font-size: ${(props) => props.theme.fontSizes.caption};
+  color: ${(props) => props.theme.colors.ui.primary};
+`;
+const Info = styled(View)`
+  padding: ${(props) => props.theme.space[3]};
 `;
 const RestaurantCard = styled(Card)`
   background-color: white;
 `;
 const RestaurantCardCover = styled(Card.Cover)`
-  padding: 20px;
-  background-color: white;
+  padding: ${(props) => props.theme.space[3]};
+  background-color: ${(props) => props.theme.colors.bg.secondary};
 `;
 const RestaurantInfoCard = ({ restaurant = {} }) => {
   const {
@@ -45,7 +55,12 @@ const RestaurantInfoCard = ({ restaurant = {} }) => {
           uri: photos[0],
         }}
       />
-      <Title>{name}</Title>
+      <Info>
+        <Title>{name}</Title>
+
+        <Address>{address}</Address>
+      </Info>
+
       {/* <Text style={styles.title}>{address}</Text>
       <Text style={{ color: "blue" }}>{rating}</Text>
       <Title>{rating}</Title> */}
