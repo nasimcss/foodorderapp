@@ -1,9 +1,12 @@
 // import { Text, View } from "react-native";
-import React from "react";
+import * as React from "react";
 import { Card } from "react-native-paper";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, Image } from "react-native";
 import styled from "styled-components/native";
-// import { SvgXml } from "react-native-svg";
+import { SvgXml } from "react-native-svg";
+import star from "../../../../assets/star";
+import open from "../../../../assets/open";
+import Spacer from "../../../components/spacer/spacer-component";
 
 // const Button = styled.button`
 //   background: transparent;
@@ -26,26 +29,44 @@ const Address = styled(Text)`
 const Info = styled(View)`
   padding: ${(props) => props.theme.space[3]};
 `;
+const Rating = styled(View)`
+  flex-direction: row;
+  padding-top: ${(props) => props.theme.space[2]};
+  padding-bottom: ${(props) => props.theme.space[2]};
+`;
 const RestaurantCard = styled(Card)`
-  background-color: white;
+  margin-bottom: ${(props) => props.theme.space[3]};
+  background-color: ${(props) => props.theme.colors.bg.primary};
 `;
 const RestaurantCardCover = styled(Card.Cover)`
   padding: ${(props) => props.theme.space[3]};
-  background-color: ${(props) => props.theme.colors.bg.secondary};
+  background-color: ${(props) => props.theme.colors.bg.primary};
+`;
+
+const Section = styled(View)`
+  flex-direction: row;
+  align-items: center;
+`;
+const Open = styled(View)`
+  flex: 1;
+  flex-direction: row;
+  justify-content: flex-end;
 `;
 const RestaurantInfoCard = ({ restaurant = {} }) => {
   const {
     name = "Some Restaurant Name",
-    icon,
+    icon = "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
     photos = [
       "https://www.foodiesfeed.com/wp-content/uploads/2019/04/easter-breakfast-of-fried-quail-eggs-on-bread-with-butter-1.jpg",
     ],
     address = "100 Some Randome Street",
     isOpenNow = true,
-    rating = 4,
-    isClosedTemporarily,
+    rating = 5,
+    isClosedTemporarily = true,
   } = restaurant;
 
+  const ratingArray = Array.from(new Array(Math.floor(rating)));
+  // console.log(ratingArray);
   return (
     <RestaurantCard elevation={10} style={styles.card}>
       <RestaurantCardCover
@@ -57,6 +78,34 @@ const RestaurantInfoCard = ({ restaurant = {} }) => {
       />
       <Info>
         <Title>{name}</Title>
+        {/* <Rating>
+          {ratingArray.map(() => (
+            <SvgXml width="20" height="20" xml={star} />
+          ))}
+        </Rating>
+        <View>
+          <SvgXml width="20" height="20" xml={open} />
+        </View> */}
+        <Section>
+          <Rating>
+            {ratingArray.map(() => (
+              <SvgXml width="20" height="20" xml={star} />
+            ))}
+          </Rating>
+          <Open>
+            {isClosedTemporarily && (
+              <Text variant="label" style={{ color: "red" }}>
+                CLOSED TEMPORARILY
+              </Text>
+            )}
+            <Spacer variant="left.large" />
+            {isOpenNow && (
+              <SvgXml key={isOpenNow} width="20" height="20" xml={open} />
+            )}
+            <Spacer variant="left.large" />
+            <Image style={{ width: 20, height: 20 }} source={{ uri: icon }} />
+          </Open>
+        </Section>
 
         <Address>{address}</Address>
       </Info>
